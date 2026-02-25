@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Informações Legais - Fortaleza Roleplay</title>
+    
+    <style>
+        /* --- VARIÁVEIS DE CORES (Temas) --- */
+        :root {
+            /* Padrão (Light Mode) */
+            --sf-pro: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+            --bg-body: #ffffff;
+            --bg-sidebar: #f5f5f7;
+            --bg-header: rgba(255, 255, 255, 0.85);
+            --border-color: #d2d2d7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-blue: #0071e3;
+            --search-bg: #ffffff;
+            --item-hover: rgba(0,0,0,0.05);
+            --header-height: 56px;
+            --sidebar-width: 280px; /* Reduzido para o menu legal */
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-body: #000000;
+            --bg-sidebar: #1c1c1e;
+            --bg-header: rgba(28, 28, 30, 0.85);
+            --border-color: #38383a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #98989d;
+            --accent-blue: #0a84ff;
+            --search-bg: #2c2c2e;
+            --item-hover: rgba(255,255,255,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+
+        body {
+            font-family: var(--sf-pro);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- HEADER (Idêntico ao original) --- */
+        header {
+            height: var(--header-height);
+            background: var(--bg-header);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 2000;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .header-left { display: flex; align-items: center; width: 200px; }
+        .logo-placeholder { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18px; color: var(--text-primary); text-decoration: none; }
+        .logo-img { height: 32px; width: auto; display: block; }
+        .logo-missing { height: 32px; padding: 0 10px; background: var(--bg-sidebar); border: 1px dashed var(--text-secondary); border-radius: 6px; display: flex; align-items: center; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; }
+
+        .header-nav { display: flex; gap: 24px; align-items: center; }
+        .header-nav a { text-decoration: none; font-size: 13px; color: var(--text-primary); opacity: 0.8; transition: opacity 0.2s, color 0.2s; }
+        .header-nav a:hover { opacity: 1; color: var(--accent-blue); }
+        .header-nav a.active { opacity: 1; font-weight: 600; }
+
+        .ios-switch { position: relative; display: inline-block; width: 46px; height: 26px; margin-left: 20px; }
+        .ios-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e9e9ea; transition: .4s; border-radius: 34px; }
+        [data-theme="dark"] .slider { background-color: #39393d; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: #30d158; }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* --- LAYOUT LEGAL (Estilo Apple) --- */
+        main {
+            display: flex;
+            margin-top: var(--header-height);
+            height: calc(100vh - var(--header-height));
+            width: 100%;
+        }
+
+        /* Menu Lateral Legal */
+        aside {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .legal-menu-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 24px 10px 24px;
+        }
+
+        .legal-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .legal-nav li a {
+            display: block;
+            padding: 12px 24px;
+            font-size: 14px;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .legal-nav li a:hover {
+            background-color: var(--item-hover);
+        }
+
+        .legal-nav li a.active {
+            font-weight: 600;
+            border-left-color: var(--accent-blue);
+            background-color: var(--item-hover);
+        }
+
+        /* Área de Conteúdo Jurídico */
+        .legal-content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            background-color: var(--bg-body);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Scrollbar fina */
+        .legal-content-wrapper::-webkit-scrollbar { width: 8px; }
+        .legal-content-wrapper::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.3); border-radius: 4px; }
+
+        .legal-document {
+            max-width: 780px;
+            width: 100%;
+            padding: 60px 40px;
+        }
+
+        .legal-document h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .legal-document .last-updated {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .legal-document h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .legal-document p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            opacity: 0.85;
+        }
+
+        .legal-document strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .legal-document ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .legal-document li {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            opacity: 0.85;
+            margin-bottom: 8px;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 768px) {
+            main { flex-direction: column; }
+            aside { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; flex-shrink: 0; }
+            .legal-nav { flex-direction: row; overflow-x: auto; white-space: nowrap; padding-bottom: 5px; }
+            .legal-nav li a { padding: 10px 16px; border-left: none; border-bottom: 2px solid transparent; font-size: 13px; }
+            .legal-nav li a.active { border-left-color: transparent; border-bottom-color: var(--accent-blue); }
+            .header-nav { display: none; }
+            .ios-switch { transform: scale(0.8); margin-left: 10px; }
+            .legal-document { padding: 30px 20px; }
+            .legal-document h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="logo-placeholder">
+                <img src="logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
+                <div id="logo-fallback" class="logo-missing" style="display: none;">Sua Logo</div>
+                <span style="margin-left: 8px;">Fortal Roleplay</span>
+            </a>
+        </div>
+        
+        <div class="header-nav">
+            <a href="index.html">Mapa</a>
+            <a href="roteiros.html">Roteiros</a>
+            <a href="sobre.html" class="active">Sobre</a>
+
+            <label class="ios-switch" title="Alterar Tema">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
+
+    <main>
+        <aside>
+            <div class="legal-menu-title">Legal</div>
+            <ul class="legal-nav">
+                <li><a href="#termos" class="active" onclick="setActive(this)">Termos de Uso</a></li>
+                <li><a href="#base-legal" onclick="setActive(this)">Base Legal e Crítica</a></li>
+                <li><a href="#privacidade" onclick="setActive(this)">Política de Privacidade</a></li>
+                <li><a href="#contato" onclick="setActive(this)">Direito de Resposta</a></li>
+            </ul>
+        </aside>
+
+        <div class="legal-content-wrapper">
+            <div class="legal-document">
+                <h1>Termos e Condições Legais</h1>
+                <div class="last-updated">Última atualização: Fevereiro de 2026</div>
+
+                <p>Bem-vindo ao Fortal Roleplay. Os termos a seguir ditam as regras de uso, a base jurídica de nossa atuação e as nossas políticas de dados. Ao utilizar este serviço, você concorda com as disposições estabelecidas neste documento.</p>
+
+                <h2 id="termos">1. Natureza do Serviço e Finalidade</h2>
+                <p>O Fortal Roleplay é um projeto de mapeamento cultural independente, cujo objetivo é realizar uma <strong>crônica urbana e satírica</strong> sobre as dinâmicas sociais, espaços de convivência e a "fauna local" da cidade de Fortaleza, Ceará. Todo o conteúdo presente na plataforma é redigido sob a ótica do humor, da hipérbole e do entretenimento sociocultural.</p>
+                <p>As descrições dos estabelecimentos constituem <strong>juízos de valor estritamente subjetivos</strong> e percepções artísticas da equipe editorial. Não configuram (e não devem ser interpretadas como) análises técnicas, sanitárias, financeiras ou laudos de qualidade sobre os serviços prestados pelas empresas citadas.</p>
+
+                <h2 id="base-legal">2. Base Legal, Liberdade de Expressão e "Animus Jocandi"</h2>
+                <p>O conteúdo veiculado nesta plataforma encontra amparo jurídico no <strong>Direito Constitucional à Liberdade de Expressão e de Crítica</strong>, assegurado pelo Artigo 5º, incisos IV e IX, da Constituição Federal da República Federativa do Brasil.</p>
+                <p>Declaramos expressamente que os textos redigidos possuem o chamado <em>animus jocandi</em> (a intenção de brincar, satirizar e fazer humor) e o <em>animus criticandi</em> (intenção de criticar comportamentos sociais). Sob o entendimento consolidado do Supremo Tribunal Federal (STF), a sátira é uma manifestação essencial do pensamento e do escrutínio social, sendo incabível a censura prévia.</p>
+                <p>Ressaltamos que <strong>não praticamos imputação de crimes (calúnia) nem alegações factuais falsas (difamação técnica)</strong> contra pessoas jurídicas ou físicas. As menções a estereótipos (ex: "dentistas de HB20", "herdeiros", "galera suada") são figuras de linguagem genéricas, não direcionadas a indivíduos específicos, impossibilitando a configuração de dano moral a terceiros (ausência de lesão à honra subjetiva) ou dano à honra objetiva das empresas (Súmula 227 do STJ).</p>
+
+                <h2 id="privacidade">3. Política de Privacidade e LGPD (Zero Coleta de Dados)</h2>
+                <p>A privacidade dos nossos usuários é um princípio inegociável. Em estrita conformidade com a Lei Geral de Proteção de Dados Pessoais (LGPD - Lei nº 13.709/2018), o Fortal Roleplay estabelece que:</p>
+                <ul>
+                    <li><strong>Não utilizamos Cookies:</strong> Nenhuma informação de navegação é armazenada no seu dispositivo.</li>
+                    <li><strong>Não coletamos Dados Pessoais:</strong> Não solicitamos cadastro, e-mail, nome ou qualquer dado de identificação para a utilização do mapa interativo.</li>
+                    <li><strong>Não rastreamos Localização:</strong> O uso do mapa é renderizado localmente no seu dispositivo. Não recebemos nem armazenamos as coordenadas de GPS dos usuários.</li>
+                </ul>
+
+                <h2 id="contato">4. Marco Civil da Internet e Direito de Resposta</h2>
+                <p>O Fortal Roleplay atua como um provedor de aplicação de internet. Nos termos do <strong>Artigo 19 do Marco Civil da Internet (Lei nº 12.965/2014)</strong>, a plataforma apenas poderá ser responsabilizada civilmente por danos decorrentes de conteúdo gerado caso, após ordem judicial específica e válida, não tome as providências para tornar o conteúdo indisponível.</p>
+                <p>Ainda assim, prezamos pelo debate democrático e pela boa-fé. Caso o representante legal de um estabelecimento citado sinta que a hipérbole ou a sátira ultrapassou os limites do conforto institucional, oferecemos o <strong>Direito de Resposta</strong> amigável.</p>
+                <p>Para solicitar a inclusão de uma nota de esclarecimento do estabelecimento, ou dialogar sobre a moderação de um descritivo específico, entre em contato através dos nossos canais oficiais nas redes sociais. Avaliaremos o pleito de forma administrativa, priorizando sempre a resolução extrajudicial e o bom humor.</p>
+
+                <br><br><br>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- Lógica para o Menu Lateral ---
+        function setActive(element) {
+            document.querySelectorAll('.legal-nav a').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // --- DARK MODE TOGGLE (Mesma lógica do original) ---
+        const toggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        toggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                body.setAttribute('data-theme', 'dark');
+            } else {
+                body.setAttribute('data-theme', 'light');
+            }
+        });
+
+        // Detectar preferência do sistema ao carregar
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            toggle.checked = true;
+            body.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</body>
+</html>
