@@ -1,4 +1,4 @@
-# 📍 Fortaleza Roleplay — By Reddit Fortal
+# Fortal Roleplay — By Reddit Fortaleza
 
 > **Uma interface Apple-style para descobrir a alma (e o veneno) de Fortaleza.**
 
