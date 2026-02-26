@@ -91,9 +91,13 @@
         .logo-placeholder:hover { opacity: 0.7; }
 
         .logo-img {
-            height: 32px;
+            height: 48px;
             width: auto;
             display: block;
+            filter: drop-shadow(0 0 6px rgba(255,255,255,0.9)) drop-shadow(0 0 12px rgba(255,255,255,0.6)) brightness(0) invert(1);
+        }
+        [data-theme="dark"] .logo-img {
+            filter: drop-shadow(0 0 6px rgba(255,255,255,0.7)) drop-shadow(0 0 14px rgba(255,255,255,0.4)) brightness(0) invert(1);
         }
 
         .logo-missing {
@@ -393,15 +397,229 @@
             opacity: 0;
         }
 
+        /* ===================== iOS BOTTOM TAB BAR ===================== */
+        .mobile-tab-bar {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-tab-bar {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 3000;
+                height: 56px;
+                padding-bottom: env(safe-area-inset-bottom);
+                background: var(--bg-header);
+                backdrop-filter: saturate(180%) blur(20px);
+                -webkit-backdrop-filter: saturate(180%) blur(20px);
+                border-top: 1px solid var(--border-color);
+                align-items: stretch;
+                justify-content: space-around;
+                transition: background 0.3s, border-color 0.3s;
+            }
+
+            .tab-item {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                text-decoration: none;
+                color: var(--text-secondary);
+                font-size: 10px;
+                font-weight: 500;
+                font-family: var(--sf-pro);
+                transition: color 0.18s;
+                -webkit-tap-highlight-color: transparent;
+                cursor: pointer;
+                background: none;
+                border: none;
+                padding: 0;
+            }
+
+            .tab-item.active {
+                color: var(--accent-blue);
+            }
+
+            .tab-item svg {
+                width: 24px;
+                height: 24px;
+                stroke-width: 1.7;
+                transition: transform 0.15s;
+            }
+
+            .tab-item.active svg {
+                stroke-width: 2.2;
+            }
+
+            .tab-item:active svg {
+                transform: scale(0.88);
+            }
+
+            /* theme toggle inside tab bar */
+            .tab-item .tab-switch-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3px;
+            }
+
+            .tab-item .mini-switch {
+                position: relative;
+                width: 34px;
+                height: 20px;
+            }
+
+            .tab-item .mini-switch input { opacity:0; width:0; height:0; position:absolute; }
+
+            .tab-item .mini-slider {
+                position: absolute;
+                inset: 0;
+                background: #e9e9ea;
+                border-radius: 34px;
+                cursor: pointer;
+                transition: background .3s;
+            }
+
+            [data-theme="dark"] .tab-item .mini-slider { background: #39393d; }
+
+            .tab-item .mini-slider::before {
+                content: "";
+                position: absolute;
+                height: 16px; width: 16px;
+                left: 2px; top: 2px;
+                background: white;
+                border-radius: 50%;
+                transition: transform .3s;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+            }
+
+            .tab-item .mini-switch input:checked + .mini-slider { background: #30d158; }
+            .tab-item .mini-switch input:checked + .mini-slider::before { transform: translateX(14px); }
+        }
+
         /* ===================== RESPONSIVIDADE ===================== */
         @media (max-width: 768px) {
-            main { flex-direction: column-reverse; }
-            aside { width: 100%; height: 45%; border-right: none; border-top: 1px solid var(--border-color); }
-            #map { height: 55%; }
+            :root {
+                --header-height: 52px;
+                --sidebar-width: 100%;
+            }
+
+            body { overflow: hidden; }
+
+            header {
+                padding: 0 16px;
+            }
+
+            .header-left { width: auto; flex: 1; }
+
+            .logo-img { height: 38px; }
+
             .header-nav { display: none; }
-            .logo-placeholder span { display: none; }
-            .ios-switch { transform: scale(0.85); margin-left: 10px; }
-            #toast { bottom: calc(45% + 16px); }
+
+            .ios-switch { 
+                transform: scale(0.85); 
+                margin-left: 10px; 
+            }
+
+            main { 
+                flex-direction: column; 
+                height: calc(100vh - var(--header-height) - 56px - env(safe-area-inset-bottom));
+                position: relative;
+            }
+
+            /* MAP takes full height on mobile */
+            #map { 
+                height: 50vh;
+                width: 100%;
+                z-index: 1;
+                flex: none;
+            }
+
+            /* SIDEBAR slides up from bottom */
+            aside {
+                width: 100%;
+                height: 50vh;
+                border-right: none;
+                border-top: 1px solid var(--border-color);
+                flex-direction: column;
+                border-radius: 16px 16px 0 0;
+                overflow: hidden;
+                flex: none;
+            }
+
+            /* Handle bar on top of sidebar */
+            aside::before {
+                content: '';
+                display: block;
+                width: 36px;
+                height: 4px;
+                background: var(--border-color);
+                border-radius: 2px;
+                margin: 8px auto 4px;
+                flex-shrink: 0;
+            }
+
+            .search-container {
+                padding: 8px 12px;
+            }
+
+            .ios-search {
+                font-size: 14px;
+                padding: 8px 10px 8px 34px;
+            }
+
+            .filter-bar {
+                padding: 6px 12px;
+                gap: 5px;
+            }
+
+            .filter-pill {
+                padding: 3px 10px;
+                font-size: 10px;
+            }
+
+            .place-item {
+                padding: 10px 14px;
+                gap: 10px;
+            }
+
+            .place-content h3 {
+                font-size: 14px;
+            }
+
+            .place-content p {
+                font-size: 11px;
+            }
+
+            /* Toast above sidebar */
+            #toast { 
+                bottom: calc(50vh + 56px + 16px);
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+
+            /* Leaflet controls above tab bar */
+            .leaflet-bottom.leaflet-right {
+                bottom: calc(50vh + 8px);
+            }
+
+            /* Popup adjustments */
+            .leaflet-popup-content {
+                width: 220px !important;
+                padding: 14px;
+            }
+            .popup-title { font-size: 15px; }
+            .popup-desc { font-size: 12px; margin-bottom: 12px; }
+        }
+
+        @media (max-width: 400px) {
+            .filter-pill { padding: 3px 8px; font-size: 9px; }
+            .place-item { padding: 8px 12px; }
         }
     </style>
 </head>
@@ -470,6 +688,43 @@
 
     <div id="toast"></div>
 
+    <!-- iOS Bottom Tab Bar (mobile only) -->
+    <nav class="mobile-tab-bar" id="mobile-tab-bar">
+        <a href="index.html" class="tab-item active" id="tab-map">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+                <line x1="9" y1="3" x2="9" y2="18"/>
+                <line x1="15" y1="6" x2="15" y2="21"/>
+            </svg>
+            <span>Mapa</span>
+        </a>
+        <a href="roteiros.html" class="tab-item" id="tab-roteiros">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <span>Roteiros</span>
+        </a>
+        <a href="sobre.html" class="tab-item" id="tab-sobre">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <span>Sobre</span>
+        </a>
+        <button class="tab-item" id="tab-theme" aria-label="Alternar Tema">
+            <label class="mini-switch">
+                <input type="checkbox" id="theme-toggle-mobile">
+                <span class="mini-slider"></span>
+            </label>
+            <span id="tab-theme-label">Claro</span>
+        </button>
+    </nav>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // ===================== BASE DE DADOS =====================
@@ -493,18 +748,18 @@
             { name: "Cervejaria Capitosa", cat: "Artesanal", color: "#af52de", lat: -3.7375, lon: -38.4990, desc: "Público que discute lúpulo a noite toda." },
             { name: "Brauhaus", cat: "Alemão", color: "#af52de", lat: -3.7320, lon: -38.5050, desc: "Templo da cerveja importada." },
             { name: "Mayú", cat: "Alta Gastronomia", color: "#af52de", lat: -3.7340, lon: -38.4970, desc: "Restaurante do Senac. Comida experimental." },
-            { name: "Cinema do Dragão", cat: "Cinefilia", color: "#af52de", lat: -3.7220, lon: -38.5200, desc: "Filmes que ninguém entende e debate sobre semiótica." },
+            { name: "Cinema do Dragão", cat: "Cinefilia", color: "#af52de", lat: -3.7222, lon: -38.5182, desc: "Filmes que ninguém entende e debate sobre semiótica." },
             { name: "Café Couture", cat: "Jazz & Drinks", color: "#af52de", lat: -3.7335, lon: -38.5040, desc: "Piano e luz vermelha. Boemia afrancesada." },
             { name: "Brewstone Pub", cat: "Cerveja & Rock", color: "#af52de", lat: -3.7360, lon: -38.5010, desc: "Pub sério. Cerveja própria excelente." },
             { name: "Amika Coffee", cat: "Café Geek", color: "#af52de", lat: -3.7350, lon: -38.4980, desc: "Café pra trabalhar remoto. Cheio de MacBooks." },
             { name: "Le Pain Le Café", cat: "Francês", color: "#af52de", lat: -3.7370, lon: -38.4960, desc: "Croissant e ar condicionado. Madames e cults." },
             { name: "Benévolo", cat: "Gelato", color: "#af52de", lat: -3.7340, lon: -38.5000, desc: "Sorvete e café. Ponto de encontro pós-almoço." },
             { name: "Museu da Fotografia", cat: "Cultura", color: "#af52de", lat: -3.7345, lon: -38.4930, desc: "Ar condicionado gelado e fotos incríveis." },
-            { name: "Caixa Cultural", cat: "Exposições", color: "#af52de", lat: -3.7230, lon: -38.5180, desc: "Exposições gratuitas na Praia de Iracema." },
+            { name: "Caixa Cultural", cat: "Exposições", color: "#af52de", lat: -3.7217, lon: -38.5175, desc: "Exposições gratuitas na Praia de Iracema." },
 
             // --- ESQUERDA + FODIDO (Vermelho) ---
-            { name: "Route Fortaleza", cat: "O Caos", color: "#ff3b30", lat: -3.7212, lon: -38.5205, desc: "O abismo. Onde a dignidade morre às 5 da manhã." },
-            { name: "Fuzuê Club", cat: "Balada Centro", color: "#ff3b30", lat: -3.7218, lon: -38.5198, desc: "Vizinho do Route. Pop, funk e suor." },
+            { name: "Route Fortaleza", cat: "O Caos", color: "#ff3b30", lat: -3.7215, lon: -38.5172, desc: "O abismo. Onde a dignidade morre às 5 da manhã." },
+            { name: "Fuzuê Club", cat: "Balada Centro", color: "#ff3b30", lat: -3.7218, lon: -38.5168, desc: "Vizinho do Route. Pop, funk e suor." },
             { name: "Bar do Seu Nonato", cat: "Raiz Intelectual", color: "#ff3b30", lat: -3.7441, lon: -38.5362, desc: "Ovo colorido e panelada. QG dos professores." },
             { name: "Bar do Vinil", cat: "Hipster Raiz", color: "#ff3b30", lat: -3.7433, lon: -38.5351, desc: "Bolachão na vitrola. Refúgio hipster do Benfica." },
             { name: "Rap Bar", cat: "Cena Urbana", color: "#ff3b30", lat: -3.7255, lon: -38.5258, desc: "Rima, skate e cerveja barata no Centro." },
@@ -529,10 +784,10 @@
             { name: "Haus", cat: "Eletrônico", color: "#ff3b30", lat: -3.7220, lon: -38.5180, desc: "Techno e óculos escuros às 3 da manhã." },
             { name: "Level", cat: "Balada Drag", color: "#ff3b30", lat: -3.7218, lon: -38.5170, desc: "Shows de Drag Queen e festa até amanhecer." },
             { name: "Centro Fashion", cat: "Moda & Caos", color: "#ff3b30", lat: -3.7150, lon: -38.5400, desc: "Onde a sacoleira guerreira faz a moda girar." },
-            { name: "Mercado Central", cat: "Turista & Local", color: "#ff3b30", lat: -3.7240, lon: -38.5230, desc: "Labirinto de renda e castanha." },
+            { name: "Mercado Central", cat: "Turista & Local", color: "#ff3b30", lat: -3.7290, lon: -38.5368, desc: "Labirinto de renda e castanha." },
             { name: "Mercado São Sebastião", cat: "Café Nordestino", color: "#ff3b30", lat: -3.7300, lon: -38.5350, desc: "Cuscuz, panelada e gritaria." },
             { name: "Beco da Poeira", cat: "Hardcore", color: "#ff3b30", lat: -3.7280, lon: -38.5300, desc: "Comércio popular extremo." },
-            { name: "Praça do Ferreira", cat: "Marco Zero", color: "#ff3b30", lat: -3.7270, lon: -38.5270, desc: "O coração da cidade." },
+            { name: "Praça do Ferreira", cat: "Marco Zero", color: "#ff3b30", lat: -3.7270, lon: -38.5264, desc: "O coração da cidade." },
             { name: "Cabaré da Baixa", cat: "Histórico", color: "#ff3b30", lat: -3.7200, lon: -38.5300, desc: "Boemia antiga da zona portuária." },
             { name: "Bar do Biel", cat: "Sinuca", color: "#ff3b30", lat: -3.7230, lon: -38.5250, desc: "Sinuca e cerveja barata no Centro." },
             { name: "Assis da Picanha", cat: "Picanha Raiz", color: "#ff3b30", lat: -3.7320, lon: -38.5400, desc: "Picanha boa e barata." },
@@ -588,7 +843,7 @@
             { name: "Colher de Pau", cat: "Turista Raiz", color: "#34c759", lat: -3.7360, lon: -38.4880, desc: "Baião de dois sério na Varjota." },
             { name: "Arre Égua", cat: "Forró Antigo", color: "#34c759", lat: -3.7370, lon: -38.4850, desc: "Vila sertaneja turística." },
             { name: "Kukukaya", cat: "Forró Raiz", color: "#34c759", lat: -3.7450, lon: -38.5250, desc: "Dançar agarradinho." },
-            { name: "Pirata Bar", cat: "Segunda-feira", color: "#34c759", lat: -3.7200, lon: -38.5150, desc: "Segunda mais louca do mundo." },
+            { name: "Pirata Bar", cat: "Segunda-feira", color: "#34c759", lat: -3.7192, lon: -38.5167, desc: "Segunda mais louca do mundo." },
             { name: "Lupus Bier", cat: "Humor", color: "#34c759", lat: -3.7210, lon: -38.5160, desc: "Show de humor e Rossicléa." },
             { name: "Chico do Caranguejo", cat: "Praia Futuro", color: "#34c759", lat: -3.7541, lon: -38.4450, desc: "Caranguejo e show." },
             { name: "Crocobeach", cat: "Resort", color: "#34c759", lat: -3.7330, lon: -38.4620, desc: "Hotel na areia." },
@@ -607,7 +862,7 @@
             { name: "Círculo Militar", cat: "Clube", color: "#34c759", lat: -3.7250, lon: -38.4950, desc: "Eventos militares e vista." },
             { name: "AABB", cat: "Clube", color: "#34c759", lat: -3.7300, lon: -38.4850, desc: "Churrasco de domingo." },
             { name: "BNB Clube", cat: "Clube", color: "#34c759", lat: -3.7320, lon: -38.5000, desc: "Festas juninas épicas." },
-            { name: "Parque do Cocó", cat: "Natureza", color: "#34c759", lat: -3.7450, lon: -38.4850, desc: "Piquenique e trilha." },
+            { name: "Parque do Cocó", cat: "Natureza", color: "#34c759", lat: -3.7480, lon: -38.4820, desc: "Piquenique e trilha." },
             { name: "Padaria Costa Mendes", cat: "Montese", color: "#34c759", lat: -3.7600, lon: -38.5400, desc: "Pão de coco lendário." },
             { name: "Empório Delitália", cat: "Padaria Rica", color: "#34c759", lat: -3.7360, lon: -38.4950, desc: "Presunto de Parma às 22h." },
 
@@ -615,16 +870,16 @@
             { name: "Boteco do Lee", cat: "Neutro", color: "#ffcc00", lat: -3.7305, lon: -38.5208, desc: "O purgatório." },
             { name: "Bar da Tetê", cat: "Indefinido", color: "#ffcc00", lat: -3.7321, lon: -38.5222, desc: "Ninguém define o público." },
             { name: "Relativo Bar", cat: "Depende", color: "#ffcc00", lat: -3.7315, lon: -38.5215, desc: "Tudo é relativo." },
-            { name: "Shopping Iguatemi", cat: "O Mall", color: "#ffcc00", lat: -3.7550, lon: -38.4880, desc: "Onde todo mundo se encontra." },
-            { name: "Shopping RioMar", cat: "O Novo Rico", color: "#ffcc00", lat: -3.7400, lon: -38.4750, desc: "Gigante e frio." },
-            { name: "North Shopping", cat: "O do Povo", color: "#ffcc00", lat: -3.7350, lon: -38.5600, desc: "Formigueiro na Bezerra." },
+            { name: "Shopping Iguatemi", cat: "O Mall", color: "#ffcc00", lat: -3.7554, lon: -38.4873, desc: "Onde todo mundo se encontra." },
+            { name: "Shopping RioMar", cat: "O Novo Rico", color: "#ffcc00", lat: -3.7412, lon: -38.4714, desc: "Gigante e frio." },
+            { name: "North Shopping", cat: "O do Povo", color: "#ffcc00", lat: -3.7115, lon: -38.5812, desc: "Formigueiro na Bezerra." },
             { name: "Shopping Benfica", cat: "Diversidade", color: "#ffcc00", lat: -3.7420, lon: -38.5380, desc: "Otakus e vovós." },
             { name: "Shopping Del Paseo", cat: "Compacto", color: "#ffcc00", lat: -3.7350, lon: -38.4980, desc: "Shopping de rico velho." },
-            { name: "Via Sul Shopping", cat: "Zona Sul", color: "#ffcc00", lat: -3.7900, lon: -38.4850, desc: "Shopping da Seis Bocas." },
-            { name: "Grand Shopping", cat: "Messejana", color: "#ffcc00", lat: -3.8100, lon: -38.4700, desc: "Salvou Messejana." },
+            { name: "Via Sul Shopping", cat: "Zona Sul", color: "#ffcc00", lat: -3.8298, lon: -38.5210, desc: "Shopping da Seis Bocas." },
+            { name: "Grand Shopping", cat: "Messejana", color: "#ffcc00", lat: -3.8220, lon: -38.4900, desc: "Salvou Messejana." },
             { name: "Pão de Açúcar Náutico", cat: "Meeting Point", color: "#ffcc00", lat: -3.7240, lon: -38.4930, desc: "Ponto de encontro." },
-            { name: "Feirinha da Beira Mar", cat: "Turismo", color: "#ffcc00", lat: -3.7230, lon: -38.4900, desc: "Artesanato e castanha." },
-            { name: "Estátua de Iracema", cat: "Foto", color: "#ffcc00", lat: -3.7200, lon: -38.5100, desc: "A guardiã da praia." }
+            { name: "Feirinha da Beira Mar", cat: "Turismo", color: "#ffcc00", lat: -3.7255, lon: -38.4962, desc: "Artesanato e castanha." },
+            { name: "Estátua de Iracema", cat: "Foto", color: "#ffcc00", lat: -3.7198, lon: -38.5142, desc: "A guardiã da praia." }
         ];
 
         // ===================== MAPA =====================
@@ -806,15 +1061,20 @@
 
         // ===================== DARK MODE =====================
         const toggle = document.getElementById('theme-toggle');
+        const toggleMobile = document.getElementById('theme-toggle-mobile');
+        const tabThemeLabel = document.getElementById('tab-theme-label');
         const body = document.body;
 
         function applyTheme(dark) {
             body.setAttribute('data-theme', dark ? 'dark' : 'light');
             setMapTiles(dark ? 'dark' : 'light');
             toggle.checked = dark;
+            toggleMobile.checked = dark;
+            if (tabThemeLabel) tabThemeLabel.textContent = dark ? 'Escuro' : 'Claro';
         }
 
         toggle.addEventListener('change', (e) => applyTheme(e.target.checked));
+        toggleMobile.addEventListener('change', (e) => applyTheme(e.target.checked));
 
         if (isDark) applyTheme(true);
 
