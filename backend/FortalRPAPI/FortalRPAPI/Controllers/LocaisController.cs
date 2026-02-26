@@ -26,6 +26,28 @@ namespace FortalRPAPI.Controllers
             return _context.Locais.ToList();
         }
 
+
+        [HttpGet("GetLocaisByName")]
+        public ActionResult<List<Locais>> GetLocaisByName([FromQuery] string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || name.Length < 3)
+                return BadRequest("O nome deve ter pelo menos 3 letras.");
+
+            var locais = _context.Locais
+                                 .Where(x => x.Name.Contains(name))
+                                 .ToList();
+
+            return Ok(locais);
+        }
+
+        [HttpGet("GetLocaisByTipo")]
+        public ActionResult<List<Locais>> GetLocaisByTipo([FromQuery] int tipo)
+        {
+            var locais = _context.Locais.Where(x => x.TipoLocal == tipo).ToList();
+            return Ok(locais);
+        }
+
+
         [HttpPost("PostLocal")]
         public ActionResult<Locais> PostLocal([FromForm] Locais locais, [FromForm] string usuario, [FromForm] string senha)
         {
@@ -66,6 +88,21 @@ namespace FortalRPAPI.Controllers
             _context.SaveChanges();
 
             return Ok(localExistente);
+        }
+
+        [HttpDelete("DeleteLocal")]
+        public ActionResult<string> DeleteLocal([FromForm] int id, [FromForm] string usuario, [FromForm] string senha)
+        {
+            var login = _context.Administradores
+                .FirstOrDefault(a => a.Usuario == usuario && a.Senha == senha);
+
+            if (login == null)
+                return Unauthorized("Login falhou!");
+            var LocalExistente = _context.Locais.FirstOrDefault(x => x.Id == id);
+            if (LocalExistente == null) return NotFound($"O local com o ID: {id} não existe!");
+            _context.Remove(LocalExistente);
+            _context.SaveChanges();
+            return Ok($"O local com o ID: {id} foi deletado!");
         }
        
     }
